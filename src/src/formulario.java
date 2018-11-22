@@ -5,17 +5,45 @@
  */
 package src;
 
+import java.io.File;
+import javax.swing.JFileChooser;
+
 /**
- *
- * @author xp
+ * @author MarcoGirbau
  */
 public class formulario extends javax.swing.JFrame {
 
     /**
      * Creates new form formulario
      */
-    public formulario() {
+    NoEsXpath xpath = new NoEsXpath();
+    
+    public formulario() 
+    {
         initComponents();
+        setLocationRelativeTo(null);
+    }
+    
+    private File selecDia()//Bascicamente coger el archivo
+    {
+        File fichero = null;
+        try
+        {
+            JFileChooser jfc = new JFileChooser();//viva stackoverflow
+            jfc.setDialogType(JFileChooser.OPEN_DIALOG);
+            int a = jfc.showOpenDialog(this);
+        
+            if(a == JFileChooser.APPROVE_OPTION)
+            {
+                fichero = jfc.getSelectedFile();
+            }    
+        }
+        catch(NullPointerException e)
+        {
+            System.out.println("No se ha obtenido el fichero");
+            return null;
+        }     
+        return fichero;
     }
 
     /**
@@ -36,11 +64,12 @@ public class formulario extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
+        jTextArea1.setRows(3);
         jScrollPane1.setViewportView(jTextArea1);
 
         jTextArea2.setColumns(20);
@@ -48,10 +77,17 @@ public class formulario extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTextArea2);
 
         jButton1.setText("Abrir XML");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jButton1MousePressed(evt);
+            }
+        });
 
         jLabel2.setText("Escribe abajo tu consulta superguay de Xpath");
 
         jButton2.setText("EJECUTAR");
+
+        jLabel3.setText("jLabel3");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -73,7 +109,9 @@ public class formulario extends javax.swing.JFrame {
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(136, 136, 136)
+                .addGap(44, 44, 44)
+                .addComponent(jLabel3)
+                .addGap(51, 51, 51)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -89,7 +127,9 @@ public class formulario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                    .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -108,6 +148,20 @@ public class formulario extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MousePressed
+        File fichero = selecDia();
+        int xpato = xpath.EjecutaXPath(fichero);
+        
+        if(xpato == 0)
+        {
+            jTextArea2.setText("xPath cargo wey.");
+        }
+        else if(xpato == -1)
+        {
+            jTextArea2.setText("Xpath no cargo wey.");
+        }
+    }//GEN-LAST:event_jButton1MousePressed
 
     /**
      * @param args the command line arguments
@@ -149,6 +203,7 @@ public class formulario extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
