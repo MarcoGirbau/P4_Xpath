@@ -16,7 +16,8 @@ public class formulario extends javax.swing.JFrame {
     /**
      * Creates new form formulario
      */
-    NoEsXpath xpath = new NoEsXpath();
+    NoEsXpath gestorxpath = new NoEsXpath();
+    File ficheroDef = null;
     
     public formulario() 
     {
@@ -43,7 +44,6 @@ public class formulario extends javax.swing.JFrame {
             System.out.println("No se ha obtenido el fichero");
             return null;
         }     
-        System.out.println("Ha cogido el fissero");
         return fichero;
     }
 
@@ -64,6 +64,7 @@ public class formulario extends javax.swing.JFrame {
         jAbrirxml = new javax.swing.JButton();
         jLabel = new javax.swing.JLabel();
         jEjecutar = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -105,7 +106,8 @@ public class formulario extends javax.swing.JFrame {
                             .addComponent(jScrollPane2)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jAbrirxml)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(12, 12, 12)
                         .addComponent(jLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)))
@@ -119,7 +121,9 @@ public class formulario extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jAbrirxml)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jAbrirxml)
+                    .addComponent(jLabel2))
                 .addGap(1, 1, 1)
                 .addComponent(jLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -146,11 +150,25 @@ public class formulario extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jAbrirxmlMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jAbrirxmlMousePressed
-        selecDia();
+        //Lo mismo que el dom
+        ficheroDef = selecDia();
+        int gxpath = gestorxpath.abrir_xml(ficheroDef);
+        
+        if(gxpath == 0)
+        {
+            jLabel2.setText("Se ha obtenido el fichero.");
+        }
+        else if(gxpath == -1)
+        {
+            jLabel2.setText("No se ha podido obtener el fichero.");
+        }
     }//GEN-LAST:event_jAbrirxmlMousePressed
 
     private void jEjecutarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jEjecutarMousePressed
-        //xpath.EjecutaXPath();
+        jTextArea2.setText("");//para que se borre la consulta anterior
+        String sal = gestorxpath.EjecutaXPath(ficheroDef, jTextArea1.getText());
+        String ida = jTextArea2.getText();
+        jTextArea2.setText(sal + ida);//Ir añadiendo lo que mete de forma recursiva
     }//GEN-LAST:event_jEjecutarMousePressed
 
     /**
@@ -192,6 +210,7 @@ public class formulario extends javax.swing.JFrame {
     private javax.swing.JButton jAbrirxml;
     private javax.swing.JButton jEjecutar;
     private javax.swing.JLabel jLabel;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
