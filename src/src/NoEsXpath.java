@@ -78,13 +78,18 @@ public class NoEsXpath
         if(nodeList != null)
         {
             for (int i = 0; i < nodeList.getLength(); i++)
-            {
-                salida += intentoDeRecursividad(nodeList.item(i).getChildNodes());
+            {      
                 if(nodeList.item(i).getNodeValue() != null && !nodeList.item(i).getNodeValue().replace("\t", "").replace("\n", "").isEmpty())//Putas tabulaciones
                 {
                     salida += nodeList.item(i).getNodeValue().replace("\t", "").replace("\n", "") + "\n";
+                    System.out.println("llegó");
                 }
-            } 
+                else if(nodeList.item(i).getAttributes().getLength() != 0)
+                {
+                    salida += intentoDeRecursividad(nodeList.item(i).getAttributes().item(0).getChildNodes());
+                }
+                salida += intentoDeRecursividad(nodeList.item(i).getChildNodes());
+            }
         }
         return salida;
     }
